@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>console@clixxierails</title>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="https://dev-fotobuch.clixxie.de/app/js/clixxierails.js"></script>
+<script type="text/javascript">
+var console = console || {log:function(msg){}}
+,	notify = function(msg){console.log(msg);}
+,	output = function(stdout){
+		return function(msg){
+			if(typeof msg === 'object')// Arrayformat
+				for(m in msg)
+					stdout.appendChild(document.createTextNode(msg[m] + '\n'));
+		};
+	};
+window.onload = function(e){
+	var outHandler = output(document.getElementById('taOut'));
+	$(document).on('validation','form',function(e){
+		outHandler(e.daten.msg);
+	});
+	$('body').on('validation','form',function(e){
+		outHandler(e.daten.msg);
+	});
+};
+</script>
+<style type="text/css">
+	div, form, textarea {
+		width: 100%;
+		margin: 0px auto;
+		line-height: 1.3em;
+		font-size: 18px;
+		font-family: Calibri, Verdana, Arial;
+		color: #000;
+		background-color: #fff;
+	}
+	pre {
+		width: 100%;
+		overflow: hidden;
+	}
+</style>
+</head>
+<body>
+<div class="container">
+	<div>console dump</div>
+	<div>source <a target="_blank" href="https://dev-fotobuch.clixxie.de/app/js/clixxierails.js">clixxierails.js</a></div>
+	<pre>$.ajax({url:'/clixxie-console/json.php',type:'post',dataType:'json',data:{url:'users.json',method:'GET',content:{access_token:'9ef41f12be81b278d779a566688c84c4'}},success:notify,error:notify});</pre>
+	<div><form id="logForm"><textarea id="taOut" name="taOut" rows="25"></textarea></form></div>
+</div>
+</body>
+</html>
